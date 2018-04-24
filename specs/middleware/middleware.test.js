@@ -56,4 +56,26 @@ describe('dataService middleware', () => {
         });
     });
   });
+
+  describe('fetchSpecializedData action', () => {
+    const testTarget = 'BTC';
+    const testAction = {
+      type: types.fetchSpecializedData,
+      payload: testTarget,
+    };
+
+    it('should call the data service with url \'/page\'', () => {
+      dataService(testAction)
+        .then(() => {
+          expect(fakeDataFetch).toHaveBeenCalledWith(expect.stringContaining(`/page/${testTarget}`));
+        });
+    });
+
+    it('should call the data service with the url \'/history\'', () => {
+      dataService(testAction)
+        .then(() => {
+          expect(fakeDataFetch).toHaveBeenCalledWith(expect.stringContaining(`/history/${testTarget}`));
+        });
+    });
+  });
 });

@@ -14,6 +14,11 @@ export default function bindMiddleware(dataService) {
             return dataService(`${baseUrl}/front`)
               .then(currency => next(actions.receiveCurrencyData(currency)))
               .catch(error => next(actions.handleError(error)));
+          case types.fetchSpecializedData:
+            return Promise.all([dataService(`${baseUrl}/page/${action.payload}`), dataService(`${baseUrl}/history/${action.payload}`)])
+              .then(data => ({ ...data[0], history: data[1] }))
+              .then(data => next(actions.receiveSpecializedData(data)))
+              .catch(error => next(actions.handleError(error)));
           default:
             break;
         }
