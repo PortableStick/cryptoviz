@@ -12,7 +12,7 @@ export default function bindMiddleware(dataService) {
           case types.fetchCurrencyData:
             next(actions.flagLoading());
             return dataService(`${baseUrl}/front`)
-              .then(posts => next(actions.receiveCurrencyData(posts)))
+              .then(currency => next(actions.receiveCurrencyData(currency)))
               .catch(error => next(actions.handleError(error)));
           default:
             break;
