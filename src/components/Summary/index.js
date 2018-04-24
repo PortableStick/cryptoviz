@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CurrencyItem from '../CurrencyItem';
 import actions from '../../actions';
 
-class Summary extends Component {
+export class Summary extends Component {
   constructor(props) {
     super(props);
     props.fetchCurrencyData();

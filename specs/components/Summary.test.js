@@ -1,10 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Summary from '../../src/components/Summary';
+import { Summary } from '../../src/components/Summary';
 import { currency } from '../../currency.db.json';
 
 const props = {
-  currencies: currency,
+  currencyData: currency,
+  fetchCurrencyData: jest.fn(),
+  loading: false,
 };
 
 describe('<Summary />', () => {
