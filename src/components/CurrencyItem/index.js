@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function CurrencyItem(props) {
   return (
@@ -13,7 +14,12 @@ function CurrencyItem(props) {
             </div>
           </div>
           <div className="content">
-            ${props.usdVolume}
+            <span className="usdVolume">
+              ${props.usdVolume}
+            </span>
+            <Link to={`/${props.short}`}>
+              &nbsp;Read more
+            </Link>
           </div>
         </div>
       </div>
