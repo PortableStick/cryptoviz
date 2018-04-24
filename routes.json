@@ -1,0 +1,5 @@
+{
+  "/front": "/currency",
+  "/page/:name": "/special",
+  "/history/:name": "/market_cap"
+}
