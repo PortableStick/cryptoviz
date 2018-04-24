@@ -34,6 +34,18 @@ describe('action creators', () => {
     });
   });
 
+  describe('FETCH_SPECIALIZED_DATA', () => {
+    it('should create an action that fetches data for a single currency', () => {
+      const testName = 'dog';
+      const expectedAction = {
+        type: types.fetchSpecializedData,
+        payload: testName,
+      };
+
+      expect(actions.fetchSpecializedData(testName)).toEqual(expectedAction);
+    });
+  });
+
   describe('RECEIVE_SPECIALIZED_DATA', () => {
     it('should create an action that accepts data for a single currency', () => {
       const testData = {
@@ -46,6 +58,16 @@ describe('action creators', () => {
       };
 
       expect(actions.receiveSpecializedData(testData)).toEqual(expectedAction);
+    });
+  });
+
+  describe('FETCH_MARKET_DATA', () => {
+    it('should create an action that fetches market data for a single currency', () => {
+      const expectedAction = {
+        type: types.fetchMarketData,
+      };
+
+      expect(actions.fetchMarketData()).toEqual(expectedAction);
     });
   });
 
