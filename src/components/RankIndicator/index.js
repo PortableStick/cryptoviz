@@ -24,7 +24,7 @@ export const medals = {
 function RankIndicator({ rank, radius }) {
   let style = {
     display: 'inline-block',
-    marginLeft: '10px',
+    marginRight: '10px',
     lineHeight: 1,
     borderRadius: '50%',
     width: `${radius}em`,

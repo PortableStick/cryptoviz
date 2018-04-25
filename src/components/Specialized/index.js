@@ -6,6 +6,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import CapChangeIndicator from '../CapChangeIndicator';
 import RankIndicator from '../RankIndicator';
 import actions from '../../actions';
+import { formatInteger, formatMoney } from '../../utils';
 
 export class Specialized extends Component {
   constructor(props) {
@@ -20,15 +21,42 @@ export class Specialized extends Component {
           <div className="hero-body">
             <div className="container">
               <h1 className="title">
-                <span className="c-name">{this.props.display_name}</span><RankIndicator rank={this.props.rank} radius={1.2} />
+                <RankIndicator rank={this.props.rank} radius={1.2} />
+                <span className="c-name">{this.props.display_name}</span>
               </h1>
               <h2 className="subtitle">
                 <span className={`sprite-${this.props.display_name.toLowerCase()}`} style={{ display: 'inline-block', transform: 'translateY(5px)' }} /> {this.props.id}
+                <CapChangeIndicator capChange={this.props.cap24hrChange} />
               </h2>
-              <CapChangeIndicator capChange={this.props.cap24hrChange} />
             </div>
           </div>
         </section>
+        <div className="level">
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">DOM index</p>
+              <p className="title">{this.props.dom}%</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Market Capacity</p>
+              <p className="title">${formatMoney(this.props.market_cap)}</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Total Volume</p>
+              <p className="title">${formatMoney(this.props.volume)}</p>
+            </div>
+          </div>
+          <div className="level-item has-text-centered">
+            <div>
+              <p className="heading">Available Supply</p>
+              <p className="title">{formatInteger(this.props.supply)}</p>
+            </div>
+          </div>
+        </div>
         <div className="container" style={{ marginTop: '10px' }}>
           <table className="table is-fullwidth is-striped">
             <thead>
@@ -77,6 +105,10 @@ Specialized.defaultProps = {
   price_zec: 0,
   price_eur: 0,
   cap24hrChange: 0,
+  dom: 0,
+  market_cap: 0,
+  supply: 0,
+  volume: 0,
 };
 
 Specialized.propTypes = {
@@ -85,7 +117,7 @@ Specialized.propTypes = {
   // bitnodesCount:PropTypes.number,
   // btcCap: PropTypes.number,
   // btcPrice: PropTypes.number,
-  // dom: PropTypes.number,
+  dom: PropTypes.number,
   // totalCap: PropTypes.number,
   // volumeAlt: PropTypes.number,
   // volumeBtc: PropTypes.number,
@@ -99,12 +131,12 @@ Specialized.propTypes = {
   price_zec: PropTypes.number,
   price_eur: PropTypes.number,
   price_usd: PropTypes.number,
-  // market_cap: PropTypes.number,
+  market_cap: PropTypes.number,
   cap24hrChange: PropTypes.number,
   display_name: PropTypes.string,
   // status: PropTypes.string,
-  // supply: PropTypes.number,
-  // volume: PropTypes.number,
+  supply: PropTypes.number,
+  volume: PropTypes.number,
   // price: PropTypes.number,
   // vwap_h24: PropTypes.number,
   rank: PropTypes.number,
