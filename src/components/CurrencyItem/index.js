@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import CurrencySprite from '../CurrencySprite';
+import { formatInteger } from '../../utils';
+
 function CurrencyItem(props) {
   return (
     <li>
@@ -10,12 +13,15 @@ function CurrencyItem(props) {
           <div className="media">
             <div className="media-content">
               <p className="title is-4">{props.long}</p>
-              <p className="subtitle is-6">{props.short}</p>
+              <p className="subtitle is-6">
+                <CurrencySprite currency={props.long} />
+                {props.short}
+              </p>
             </div>
           </div>
           <div className="content">
             <span className="usdVolume">
-              ${props.usdVolume}
+              ${formatInteger(props.usdVolume)}
             </span>
             <Link to={`/${props.short}`}>
               &nbsp;Read more

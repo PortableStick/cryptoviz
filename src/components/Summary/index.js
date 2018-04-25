@@ -19,7 +19,7 @@ export class Summary extends Component {
     const { loading } = this.props;
 
     return (
-      <div>
+      <div style={{ height: '50vh', overflowY: 'scroll' }}>
         <ul className="currency-list">
           {loading ? <div>...loading...</div> : this.renderCurrencies()}
         </ul>

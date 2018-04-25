@@ -5,8 +5,13 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import CapChangeIndicator from '../CapChangeIndicator';
 import RankIndicator from '../RankIndicator';
+import CurrencySprite from '../CurrencySprite';
 import actions from '../../actions';
 import { formatInteger, formatMoney } from '../../utils';
+
+const tdStyle = {
+  minWidth: '150px',
+};
 
 export class Specialized extends Component {
   constructor(props) {
@@ -25,7 +30,8 @@ export class Specialized extends Component {
                 <span className="c-name">{this.props.display_name}</span>
               </h1>
               <h2 className="subtitle">
-                <span className={`sprite-${this.props.display_name.toLowerCase()}`} style={{ display: 'inline-block', transform: 'translateY(5px)' }} /> {this.props.id}
+                <CurrencySprite currency={this.props.display_name} />
+                {this.props.id}
                 <CapChangeIndicator capChange={this.props.cap24hrChange} />
               </h2>
             </div>
@@ -65,18 +71,18 @@ export class Specialized extends Component {
                 <th><abbr title="Euro"><FontAwesomeIcon icon="euro-sign" size="2x" /></abbr></th>
                 <th><abbr title="Bitcoin"><FontAwesomeIcon icon={['fab', 'bitcoin']} size="2x" /></abbr></th>
                 <th><abbr title="Ethereum"><FontAwesomeIcon icon={['fab', 'ethereum']} size="2x" /></abbr></th>
-                <th><abbr title="Litecoin"><div className="sprite-litecoin" /></abbr></th>
-                <th><abbr title="Z-Cash"><div className="sprite-zcash" /></abbr></th>
+                <th><abbr title="Litecoin"><CurrencySprite currency="litecoin" /></abbr></th>
+                <th><abbr title="Z-Cash"><CurrencySprite currency="zcash" /></abbr></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{this.props.price_usd}</td>
-                <td>{this.props.price_eur}</td>
-                <td>{this.props.price_btc}</td>
-                <td>{this.props.price_eth}</td>
-                <td>{this.props.price_ltc}</td>
-                <td>{this.props.price_zec}</td>
+                <td style={tdStyle} >{this.props.price_usd}</td>
+                <td style={tdStyle} >{this.props.price_eur}</td>
+                <td style={tdStyle} >{this.props.price_btc}</td>
+                <td style={tdStyle} >{this.props.price_eth}</td>
+                <td style={tdStyle} >{this.props.price_ltc}</td>
+                <td style={tdStyle} >{this.props.price_zec}</td>
               </tr>
             </tbody>
           </table>
