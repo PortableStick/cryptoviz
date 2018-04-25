@@ -59,6 +59,11 @@ export function flagsReducer(state = initialState.flags, action) {
         ...state,
         loading: false,
       };
+    case types.receiveSpecializedData:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

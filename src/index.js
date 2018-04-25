@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import './index.css';
+import './sprites.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import initFaLibrary from './initFaLibrary';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,4 +18,5 @@ ReactDOM.render(
   </Provider>
   , document.getElementById('root'),
 );
+initFaLibrary();
 registerServiceWorker();

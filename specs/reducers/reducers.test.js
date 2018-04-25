@@ -82,6 +82,19 @@ describe('flagsReducer', () => {
     expect(flagsReducer(testState, testAction)).toEqual(flags);
   });
 
+  it('should reset the LOADING flag when passed the receiveSpecializedData action', () => {
+    const testState = {
+      ...flags,
+      loading: true,
+    };
+    const testAction = {
+      type: types.receiveSpecializedData,
+      payload: [],
+    };
+
+    expect(flagsReducer(testState, testAction)).toEqual(flags);
+  });
+
   it('should set the ERROR flag when passed the handleError action', () => {
     const testAction = {
       type: types.handleError,
