@@ -9,7 +9,7 @@ function CapChangeIndicator({ capChange }) {
   };
   switch (true) {
     case capChange > 0:
-      styles.color = 'green';
+      styles.color = 'lime';
       icon = 'caret-up';
       break;
     case capChange < 0:

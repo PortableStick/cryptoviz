@@ -13,12 +13,12 @@ describe('<CapChangeIndicator />', () => {
     expect(component.exists()).toEqual(true);
   });
 
-  it('should render a green upward triangle when given a positive value', () => {
+  it('should render a lime-green upward triangle when given a positive value', () => {
     const props = {
       capChange: 1,
     };
     const component = mount(<CapChangeIndicator {...props} />);
-    expect(component.contains(<FontAwesomeIcon icon="caret-up" style={{ color: 'green' }} />)).toEqual(true);
+    expect(component.contains(<FontAwesomeIcon icon="caret-up" style={{ color: 'lime' }} />)).toEqual(true);
   });
 
   it('should render a red downward triangle when given a negative value', () => {
