@@ -7,6 +7,7 @@ const props = {
   fetchSpecializedData: jest.fn(),
   ...special,
   marketCap,
+  loading: false,
   match: {
     params: {
       name: 'BTC',

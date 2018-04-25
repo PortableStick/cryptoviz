@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
+import CapChangeIndicator from '../CapChangeIndicator';
 import actions from '../../actions';
 
 export class Specialized extends Component {
@@ -21,8 +22,9 @@ export class Specialized extends Component {
                 {this.props.display_name}
               </h1>
               <h2 className="subtitle">
-                {this.props.id} - {this.props.rank}
+                <span className={`sprite-${this.props.display_name.toLowerCase()}`} style={{ display: 'inline-block', transform: 'translateY(5px)' }} /> {this.props.id} - {this.props.rank}
               </h2>
+              <CapChangeIndicator capChange={this.props.cap24hrChange} />
             </div>
           </div>
         </section>
@@ -73,6 +75,7 @@ Specialized.defaultProps = {
   price_ltc: 0,
   price_zec: 0,
   price_eur: 0,
+  cap24hrChange: 0,
 };
 
 Specialized.propTypes = {
@@ -96,7 +99,7 @@ Specialized.propTypes = {
   price_eur: PropTypes.number,
   price_usd: PropTypes.number,
   // market_cap: PropTypes.number,
-  // cap24hrChange: PropTypes.number,
+  cap24hrChange: PropTypes.number,
   display_name: PropTypes.string,
   // status: PropTypes.string,
   // supply: PropTypes.number,
