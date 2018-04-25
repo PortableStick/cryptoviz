@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
@@ -21,7 +21,10 @@ function CapChangeIndicator({ capChange }) {
   }
 
   return (
-    <FontAwesomeIcon icon={icon} style={styles} />
+    <Fragment>
+      <FontAwesomeIcon icon={icon} style={styles} />
+      <span style={{ marginLeft: '3px' }}>{capChange}%</span>
+    </Fragment>
   );
 }
 

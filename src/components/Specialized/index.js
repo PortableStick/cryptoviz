@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import CapChangeIndicator from '../CapChangeIndicator';
+import RankIndicator from '../RankIndicator';
 import actions from '../../actions';
 
 export class Specialized extends Component {
@@ -19,10 +20,10 @@ export class Specialized extends Component {
           <div className="hero-body">
             <div className="container">
               <h1 className="title">
-                {this.props.display_name}
+                <span className="c-name">{this.props.display_name}</span><RankIndicator rank={this.props.rank} radius={1.2} />
               </h1>
               <h2 className="subtitle">
-                <span className={`sprite-${this.props.display_name.toLowerCase()}`} style={{ display: 'inline-block', transform: 'translateY(5px)' }} /> {this.props.id} - {this.props.rank}
+                <span className={`sprite-${this.props.display_name.toLowerCase()}`} style={{ display: 'inline-block', transform: 'translateY(5px)' }} /> {this.props.id}
               </h2>
               <CapChangeIndicator capChange={this.props.cap24hrChange} />
             </div>
