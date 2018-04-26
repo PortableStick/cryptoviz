@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import RankIndicator from '../RankIndicator';
 import CurrencySprite from '../CurrencySprite';
 import { formatInteger } from '../../utils';
 
@@ -12,7 +13,10 @@ function CurrencyItem(props) {
         <div className="card-content">
           <div className="media">
             <div className="media-content">
-              <p className="title is-4">{props.long}</p>
+              <p className="title is-4">
+                <RankIndicator rank={props.rank} radius={1.2} />
+                {props.long}
+              </p>
               <p className="subtitle is-6">
                 <CurrencySprite currency={props.long} />
                 {props.short}
@@ -34,6 +38,7 @@ function CurrencyItem(props) {
 }
 
 CurrencyItem.propTypes = {
+  rank: PropTypes.number.isRequired,
   // cap24hrChange: PropTypes.number.isRequired,
   long: PropTypes.string.isRequired,
   // mktcap: PropTypes.number.isRequired,

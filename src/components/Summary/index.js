@@ -12,7 +12,7 @@ export class Summary extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencyData.map(c => <CurrencyItem key={`item-${c.short}`} {...c} />);
+    return this.props.currencyData.map((c, i) => <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />);
   }
 
   render() {
