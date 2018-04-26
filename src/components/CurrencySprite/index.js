@@ -19,14 +19,18 @@ function CurrencySprite({ currency, short }) {
         className={`sprite-${currency.toLowerCase()}`}
         style={spriteStyle}
       />
-      <span style={nameStyle}>{short}</span>
+      {short ? <span style={nameStyle}>{short}</span> : ""}
     </span>
   );
 }
 
+CurrencySprite.defaultProps = {
+  short: null
+};
+
 CurrencySprite.propTypes = {
   currency: PropTypes.string.isRequired,
-  short: PropTypes.string.isRequired
+  short: PropTypes.string
 };
 
 export default CurrencySprite;
