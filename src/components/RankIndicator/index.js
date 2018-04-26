@@ -1,38 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export const medals = {
   gold: {
-    backgroundColor: '#e4f111',
-    color: 'white',
+    backgroundColor: "#e4f111",
+    color: "white"
   },
   silver: {
-    backgroundColor: '#dedede',
-    color: 'white',
+    backgroundColor: "#dedede",
+    color: "white"
   },
   bronze: {
-    backgroundColor: 'rgb(219, 190, 86)',
-    color: 'white',
+    backgroundColor: "rgb(219, 190, 86)",
+    color: "white"
   },
   participation: {
-    border: '1px solid black',
-    color: 'black',
-    backgroundColor: 'white',
-  },
+    border: "1px solid black",
+    color: "black",
+    backgroundColor: "white"
+  }
 };
 
 function RankIndicator({ rank, radius }) {
   let style = {
-    display: 'inline-block',
-    position: 'relative',
-    padding: '0',
+    display: "inline-flex",
+    justifyContent: "center",
+    alignContent: "center",
+    padding: "0",
     margin: 0,
-    textAlign: 'center',
-    marginRight: '10px',
+    marginRight: "10px",
     lineHeight: 1,
-    borderRadius: '50%',
-    width: `${radius}em`,
-    height: `${radius}em`,
+    borderRadius: "50%",
+    width: `${radius}rem`,
+    height: `${radius}rem`
   };
 
   switch (rank) {
@@ -50,17 +50,24 @@ function RankIndicator({ rank, radius }) {
   }
 
   return (
-    <span className="circle" style={style} ><span className="rank" style={{ textShadow: '#333 0 0 1px' }} >{rank}</span></span>
+    <span className="circle" style={style}>
+      <span
+        className="rank"
+        style={{ textShadow: "#333 0 0 1px", fontSize: `${radius}rem` }}
+      >
+        {rank}
+      </span>
+    </span>
   );
 }
 
 RankIndicator.defaultProps = {
-  radius: 1,
+  radius: 1
 };
 
 RankIndicator.propTypes = {
   rank: PropTypes.number.isRequired,
-  radius: PropTypes.number,
+  radius: PropTypes.number
 };
 
 export default RankIndicator;

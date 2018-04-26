@@ -1,36 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-import RankIndicator from '../RankIndicator';
-import CurrencySprite from '../CurrencySprite';
-import { formatInteger } from '../../utils';
+import RankIndicator from "../RankIndicator";
+import CurrencySprite from "../CurrencySprite";
+import { formatInteger } from "../../utils";
 
 function CurrencyItem(props) {
   return (
     <li>
       <div className="card">
         <div className="card-content">
-          <div className="media">
+          <span className="media">
+            <div className="media-left">
+              <RankIndicator rank={props.rank} radius={2} />
+            </div>
             <div className="media-content">
-              <p className="title is-4">
-                <RankIndicator rank={props.rank} radius={1.2} />
+              <p className="title">
+                <CurrencySprite currency={props.long} />
                 {props.long}
               </p>
-              <p className="subtitle is-6">
-                <CurrencySprite currency={props.long} />
-                {props.short}
-              </p>
+              <p className="subtitle">{props.short}</p>
             </div>
-          </div>
-          <div className="content">
-            <span className="usdVolume">
-              ${formatInteger(props.usdVolume)}
-            </span>
-            <Link to={`/${props.short}`}>
-              &nbsp;Read more
-            </Link>
-          </div>
+          </span>
+          <span className="content is-6">
+            <span className="usdVolume">${formatInteger(props.usdVolume)}</span>
+            <Link to={`/${props.short}`}>&nbsp;Read more</Link>
+          </span>
         </div>
       </div>
     </li>
@@ -47,7 +43,7 @@ CurrencyItem.propTypes = {
   // shapeshift: PropTypes.bool.isRequired,
   short: PropTypes.string.isRequired,
   // supply: PropTypes.number.isRequired,
-  usdVolume: PropTypes.number.isRequired,
+  usdVolume: PropTypes.number.isRequired
   // volume: PropTypes.number.isRequired,
   // vwapData: PropTypes.number.isRequired,
   // vwapDataBTC: PropTypes.number.isRequired,
