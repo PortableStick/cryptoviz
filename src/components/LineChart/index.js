@@ -14,6 +14,8 @@ class LineChart extends Component {
       dates: [],
       data: []
     };
+    this.x = d3.scaleTime();
+    this.y = d3.scaleLinear();
   }
 
   static getDerivedStateFromProps(newProps) {
@@ -21,6 +23,7 @@ class LineChart extends Component {
       date: new Date(+d[0]),
       data: +d[1]
     }));
+
     return {
       data
     };
@@ -28,11 +31,11 @@ class LineChart extends Component {
 
   componentDidMount() {
     this.resizeChart();
-    window.addEventListener("resize", this.onResize);
+    window.addEventListener("resize", this.onResize.bind(this));
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("resize", this.onResize.bind(this));
   }
 
   onResize() {
@@ -43,13 +46,38 @@ class LineChart extends Component {
   resizeChart() {
     const _h = +window.innerHeight * 0.3;
     const _w = +window.innerWidth;
+    this.width = _w - this.margin.left - this.margin.right;
+    this.height = _h - this.margin.top - this.margin.bottom;
     this.svg = d3
       .select("svg.line-chart")
       .attr("width", _w)
       .attr("height", _h);
+    this.x.rangeRound([0, this.width]);
+    this.y.rangeRound([this.height, 0]);
+  }
+
+  createXAxis() {
+    this.svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${this.margin.left}, ${this.height + this.margin.top + 10})`
+      )
+      .call(d3.axisBottom(this.x));
+  }
+
+  createYAxis() {
+    this.svg.append("g").call(d3.axisLeft(this.y));
   }
 
   componentDidUpdate() {
+    const { data } = this.state;
+
+    this.x.domain(d3.extent(data.map(d => d.date))).rangeRound([0, this.width]);
+    this.y
+      .domain(d3.extent(data.map(d => d.data)))
+      .rangeRound([this.height, 0]);
+
     this.renderChart();
   }
 
@@ -58,26 +86,13 @@ class LineChart extends Component {
     // clear the chart
     this.svg.html("");
 
-    const width =
-      +this.svg.attr("width") - this.margin.left - this.margin.right;
-    const height =
-      +this.svg.attr("height") - this.margin.top - this.margin.bottom;
-
     const g = this.svg
       .append("g")
       .attr("transform", `translate(${this.margin.left},${this.margin.top})`);
-    const x = d3
-      .scaleTime()
-      .domain(d3.extent(data.map(d => d.date)))
-      .rangeRound([0, width]);
-    const y = d3
-      .scaleLinear()
-      .domain(d3.extent(data.map(d => d.data)))
-      .rangeRound([height, 0]);
     const line = d3
       .line()
-      .x(d => x(d.date))
-      .y(d => y(d.data));
+      .x(d => this.x(d.date))
+      .y(d => this.y(d.data));
     g
       .append("path")
       .datum(this.state.data)
@@ -87,6 +102,9 @@ class LineChart extends Component {
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 1.5)
       .attr("d", line);
+
+    this.createXAxis();
+    this.createYAxis();
   }
 
   render() {
