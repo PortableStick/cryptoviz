@@ -1,7 +1,7 @@
-import { types } from '../constants';
-import actions from '../actions';
+import { types } from "../constants";
+import actions from "../actions";
 
-const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:3001';
+const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 export default function bindMiddleware(dataService) {
   return function dataMiddleWare(store) {
@@ -15,8 +15,11 @@ export default function bindMiddleware(dataService) {
               .then(currency => next(actions.receiveCurrencyData(currency)))
               .catch(error => next(actions.handleError(error)));
           case types.fetchSpecializedData:
-            return Promise.all([dataService(`${baseUrl}/page/${action.payload}`), dataService(`${baseUrl}/history/${action.payload}`)])
-              .then(data => ({ ...data[0], history: data[1] }))
+            return Promise.all([
+              dataService(`${baseUrl}/page/${action.payload}`),
+              dataService(`${baseUrl}/history/${action.payload}`)
+            ])
+              .then(data => ({ ...data[0], marketData: data[1] }))
               .then(data => next(actions.receiveSpecializedData(data)))
               .catch(error => next(actions.handleError(error)));
           default:

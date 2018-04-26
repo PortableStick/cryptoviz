@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
+import LineChart from "../LineChart";
 import CapChangeIndicator from "../CapChangeIndicator";
 import RankIndicator from "../RankIndicator";
 import CurrencySprite from "../CurrencySprite";
@@ -46,6 +47,7 @@ export class Specialized extends Component {
             </div>
           </div>
         </section>
+        <LineChart data={this.props.marketData.volume} />
         <div className="level">
           <div className="level-item has-text-centered">
             <div>
@@ -151,7 +153,12 @@ Specialized.defaultProps = {
   dom: 0,
   market_cap: 0,
   supply: 0,
-  volume: 0
+  volume: 0,
+  marketData: {
+    volume: [],
+    market_cap: [],
+    price: []
+  }
 };
 
 Specialized.propTypes = {
@@ -184,6 +191,11 @@ Specialized.propTypes = {
   // vwap_h24: PropTypes.number,
   rank: PropTypes.number,
   // alt_name: PropTypes.string,
+  marketData: PropTypes.shape({
+    market_cap: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    price: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    volume: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+  }),
   fetchSpecializedData: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
