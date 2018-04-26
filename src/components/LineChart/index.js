@@ -53,6 +53,7 @@ class LineChart extends Component {
   onResize() {
     this.resizeChart();
     this.renderChart();
+    this.createMouseEffects();
   }
 
   resizeChart() {
@@ -83,7 +84,7 @@ class LineChart extends Component {
       .append("g")
       .attr(
         "transform",
-        `translate(${this.margin.left}, ${this.height + this.margin.top + 10})`
+        `translate(${this.margin.left}, ${this.height + this.margin.top})`
       )
       .call(d3.axisBottom(this.x));
   }
@@ -96,6 +97,37 @@ class LineChart extends Component {
       .call(d3.axisRight(this.y));
   }
 
+  createMouseEffects() {
+    const {
+      height,
+      width,
+      margin: { top, bottom, left, right }
+    } = this;
+    const mouseGroup = this.svg.append("g").attr("class", "mouse-effects");
+    const mouseLine = mouseGroup
+      .append("path")
+      .attr("class", "mouse-line")
+      .style("stroke", "#3d3d3d")
+      .style("stroke-width", "1px")
+      .style("opacity", "0");
+    mouseGroup
+      .append("svg:rect")
+      .attr("transform", `translate(${left}, ${top})`)
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", "none")
+      .attr("pointer-events", "all")
+      .attr("class", "mouse-event-catcher")
+      .on("mouseout", () => d3.select(".mouse-line").style("opacity", "0"))
+      .on("mouseover", () => d3.select(".mouse-line").style("opacity", "1"))
+      .on("mousemove", function() {
+        const [x] = d3.mouse(this);
+        d3
+          .select(".mouse-line")
+          .attr("d", () => `M${x + left},${height + top} ${x + left},0`);
+      });
+  }
+
   componentDidUpdate() {
     const { data } = this.state;
 
@@ -105,6 +137,7 @@ class LineChart extends Component {
       .rangeRound([this.height, 0]);
 
     this.renderChart();
+    this.createMouseEffects();
   }
 
   renderChart() {
