@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 import RankIndicator from "../RankIndicator";
 import CurrencySprite from "../CurrencySprite";
-import { formatInteger } from "../../utils";
+import CapChangeIndicator from "../CapChangeIndicator";
+import { formatInteger, formatMoney } from "../../utils";
 
 function CurrencyItem(props) {
   return (
@@ -22,11 +23,28 @@ function CurrencyItem(props) {
               </p>
               <p className="subtitle">{props.short}</p>
             </div>
+            <div className="media-right">
+              <Link to={`/${props.short}`}>Read more</Link>
+            </div>
           </span>
-          <span className="content is-6">
-            <span className="usdVolume">${formatInteger(props.usdVolume)}</span>
-            <Link to={`/${props.short}`}>&nbsp;Read more</Link>
-          </span>
+          <div className="card-footer">
+            <div className="card-footer-item">
+              <span className="market-cap">
+                Market Cap: ${formatMoney(props.mktcap)}
+              </span>
+            </div>
+            <div className="card-footer-item">
+              <span className="usdVolume">
+                24 Hour Volume: ${formatInteger(props.usdVolume)}
+              </span>
+            </div>
+            <div className="card-footer-item">
+              <span className="24-change">
+                24 Hour Change:{" "}
+                <CapChangeIndicator capChange={props.cap24hrChange} />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </li>
@@ -35,9 +53,9 @@ function CurrencyItem(props) {
 
 CurrencyItem.propTypes = {
   rank: PropTypes.number.isRequired,
-  // cap24hrChange: PropTypes.number.isRequired,
+  cap24hrChange: PropTypes.number.isRequired,
   long: PropTypes.string.isRequired,
-  // mktcap: PropTypes.number.isRequired,
+  mktcap: PropTypes.number.isRequired,
   // perc: PropTypes.number.isRequired,
   // price: PropTypes.number.isRequired,
   // shapeshift: PropTypes.bool.isRequired,
