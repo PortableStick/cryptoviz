@@ -28,10 +28,16 @@ class LineChart extends Component {
 
   componentDidMount() {
     this.resizeChart();
-    window.addEventListener("resize", () => {
-      this.resizeChart();
-      this.renderChart();
-    });
+    window.addEventListener("resize", this.onResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
+  }
+
+  onResize() {
+    this.resizeChart();
+    this.renderChart();
   }
 
   resizeChart() {
