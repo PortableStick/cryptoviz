@@ -28,7 +28,6 @@ function RankIndicator({ rank, radius }) {
     alignContent: "center",
     padding: "0",
     margin: 0,
-    marginRight: "10px",
     lineHeight: 1,
     borderRadius: "50%",
     width: `${radius}rem`,

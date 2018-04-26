@@ -29,9 +29,18 @@ export class Specialized extends Component {
                 <RankIndicator rank={this.props.rank} radius={2} />
                 <span className="c-name">{this.props.display_name}</span>
               </h1>
-              <h2 className="subtitle">
-                <CurrencySprite currency={this.props.display_name} />
-                {this.props.id}
+              <h2
+                className="subtitle"
+                style={{
+                  display: "inline-flex",
+                  justifyContent: "space-between",
+                  alignContent: "center"
+                }}
+              >
+                <CurrencySprite
+                  currency={this.props.display_name}
+                  short={this.props.id}
+                />
                 <CapChangeIndicator capChange={this.props.cap24hrChange} />
               </h2>
             </div>

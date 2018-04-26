@@ -1,35 +1,41 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 function CapChangeIndicator({ capChange }) {
-  let icon = 'minus';
-  const styles = {
-    color: 'grey',
+  let icon = "minus";
+  const wrapperStyle = {
+    display: "inline-flex",
+    justifyContent: "space-around",
+    alignContent: "center",
+    margin: "0 10px"
+  };
+  const iconStyle = {
+    color: "grey"
   };
   switch (true) {
     case capChange > 0:
-      styles.color = 'lime';
-      icon = 'caret-up';
+      iconStyle.color = "lime";
+      icon = "caret-up";
       break;
     case capChange < 0:
-      styles.color = 'red';
-      icon = 'caret-down';
+      iconStyle.color = "red";
+      icon = "caret-down";
       break;
     case capChange === 0:
     default:
   }
 
   return (
-    <Fragment>
-      <FontAwesomeIcon icon={icon} style={styles} />
-      <span style={{ marginLeft: '3px' }}>{capChange}%</span>
-    </Fragment>
+    <span style={wrapperStyle}>
+      <FontAwesomeIcon icon={icon} style={iconStyle} />
+      <span style={{ marginLeft: "3px" }}>{capChange}%</span>
+    </span>
   );
 }
 
 CapChangeIndicator.propTypes = {
-  capChange: PropTypes.number.isRequired,
+  capChange: PropTypes.number.isRequired
 };
 
 export default CapChangeIndicator;
