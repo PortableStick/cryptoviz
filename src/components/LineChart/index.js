@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import * as d3 from "d3";
 
 class LineChart extends Component {
   constructor(props) {
     super(props);
+    this.maxWindowWidth = props.maxWindowWidth;
     this.margin = {
       top: 30,
       right: 30,
@@ -17,6 +19,16 @@ class LineChart extends Component {
     this.x = d3.scaleTime();
     this.y = d3.scaleLinear();
   }
+
+  static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    maxWindowWidth: PropTypes.number
+  };
+
+  static defaultProps = {
+    data: [],
+    maxWindowWidth: 1000
+  };
 
   static getDerivedStateFromProps(newProps) {
     const data = newProps.data.map(d => ({
@@ -45,7 +57,7 @@ class LineChart extends Component {
 
   resizeChart() {
     const _h = +window.innerHeight * 0.3;
-    const _w = +window.innerWidth;
+    const _w = Math.min(this.maxWindowWidth, +window.innerWidth);
     this.width = _w - this.margin.left - this.margin.right;
     this.height = _h - this.margin.top - this.margin.bottom;
     this.svg = d3
@@ -54,6 +66,16 @@ class LineChart extends Component {
       .attr("height", _h);
     this.x.rangeRound([0, this.width]);
     this.y.rangeRound([this.height, 0]);
+  }
+
+  createYAxis() {
+    this.svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${this.margin.right + this.margin.left}, ${this.margin.top})`
+      )
+      .call(d3.axisRight(this.y));
   }
 
   createXAxis() {
@@ -67,7 +89,11 @@ class LineChart extends Component {
   }
 
   createYAxis() {
-    this.svg.append("g").call(d3.axisLeft(this.y));
+    this.svg
+      .append("g")
+      .attr("class", "yaxis")
+      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
+      .call(d3.axisRight(this.y));
   }
 
   componentDidUpdate() {
