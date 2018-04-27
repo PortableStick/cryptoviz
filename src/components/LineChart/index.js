@@ -55,7 +55,6 @@ class LineChart extends Component {
   }
 
   setupFocus() {
-    console.log("setupFocus()");
     this.focus = this.svg
       .append("g")
       .attr("class", "focus")
@@ -106,7 +105,6 @@ class LineChart extends Component {
   }
 
   resizeChart() {
-    console.log("resizeChart()");
     const _h = +window.innerHeight * 0.3;
     const _w = Math.min(this.maxWindowWidth, +window.innerWidth);
     this.width = _w - this.margin.left - this.margin.right;
@@ -120,7 +118,6 @@ class LineChart extends Component {
   }
 
   setupOverlay() {
-    console.log("setupOverlay()");
     this.overlay = this.svg
       .append("rect")
       .attr("class", "overlay")
@@ -168,7 +165,6 @@ class LineChart extends Component {
   }
 
   createMouseEffects() {
-    console.log("createMouseEffects()");
     const {
       height,
       width,
@@ -236,7 +232,6 @@ class LineChart extends Component {
   }
 
   renderChart() {
-    console.log("renderChart()");
     const { data } = this.state;
     // clear the chart
     this.svg.html("");
