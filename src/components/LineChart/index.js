@@ -8,6 +8,8 @@ class LineChart extends Component {
   constructor(props) {
     super(props);
     this.maxWindowWidth = props.maxWindowWidth;
+    this.yLabel = "Market Volume (USD)";
+    this.xLabel = "";
     this.margin = {
       top: 30,
       right: 30,
@@ -154,6 +156,19 @@ class LineChart extends Component {
       ...axesStyles,
       display: "none"
     });
+
+    this.svg
+      .append("text")
+      .attr(
+        "transform",
+        "translate(" +
+          this.width / 2 +
+          " ," +
+          (this.height + this.margin.top + 20) +
+          ")"
+      )
+      .style("text-anchor", "middle")
+      .text(this.xLabel);
   }
 
   createYAxis() {
@@ -162,6 +177,15 @@ class LineChart extends Component {
       .attr("class", "yaxis")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
       .call(d3.axisLeft(this.yScale).ticks(4));
+
+    this.svg
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", this.margin.left)
+      .attr("x", 0 - this.height / 2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text(this.yLabel);
   }
 
   createMouseEffects() {
@@ -186,6 +210,7 @@ class LineChart extends Component {
         tooltip.style("opacity", "0");
       })
       .on("mousemove", function() {
+        if (data.length === 0) return;
         const [x, y] = d3.mouse(this);
         const date = xScale.invert(x);
         const bisectDate = d3.bisector(d => d.date).left;
