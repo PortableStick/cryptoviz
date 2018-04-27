@@ -49,8 +49,41 @@ class LineChart extends Component {
     };
   }
 
+  setupFocus() {
+    console.log("setupFocus()");
+    this.focus = this.svg
+      .append("g")
+      .attr("class", "focus")
+      .style("display", "none");
+
+    this.focus.append("circle").attr("r", 4.5);
+
+    this.focus.append("line").classed("x", true);
+
+    this.focus.append("line").classed("y", true);
+
+    this.focus
+      .append("text")
+      .attr("x", 9)
+      .attr("dy", ".35em");
+
+    d3.selectAll(".focus").style("opacity", 0.7);
+
+    d3
+      .selectAll(".focus circle")
+      .style("fill", "none")
+      .style("stroke", "black");
+
+    d3
+      .selectAll(".focus line")
+      .style("fill", "none")
+      .style("stroke", "black")
+      .style("stroke-width", "1.5px")
+      .style("stroke-dasharray", "3 3");
+  }
+
   componentDidMount() {
-    this.resizeChart();
+    this.onResize();
     window.addEventListener("resize", this.onResize.bind(this));
   }
 
@@ -61,10 +94,13 @@ class LineChart extends Component {
   onResize() {
     this.resizeChart();
     this.renderChart();
+    this.setupFocus();
+    this.setupOverlay();
     this.createMouseEffects();
   }
 
   resizeChart() {
+    console.log("resizeChart()");
     const _h = +window.innerHeight * 0.3;
     const _w = Math.min(this.maxWindowWidth, +window.innerWidth);
     this.width = _w - this.margin.left - this.margin.right;
@@ -77,6 +113,24 @@ class LineChart extends Component {
     this.yScale.rangeRound([this.height, 0]);
   }
 
+  setupOverlay() {
+    console.log("setupOverlay()");
+    this.overlay = this.svg
+      .append("rect")
+      .attr("class", "overlay")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .attr("fill", "none")
+      .attr("pointer-events", "all")
+      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
+  }
+
+  addStyles(el, styles) {
+    for (let style in styles) {
+      el.style(style, styles[style]);
+    }
+  }
+
   createXAxis() {
     this.svg
       .append("g")
@@ -85,6 +139,13 @@ class LineChart extends Component {
         `translate(${this.margin.left}, ${this.height + this.margin.top})`
       )
       .call(d3.axisBottom(this.xScale));
+    const axesStyles = {
+      fill: "none",
+      stroke: "#000",
+      "shape-rendering": "crispEdges"
+    };
+    this.addStyles(d3.selectAll(".axis path"), axesStyles);
+    this.addStyles(d3.selectAll(".axis line"), axesStyles);
   }
 
   createYAxis() {
@@ -96,53 +157,46 @@ class LineChart extends Component {
   }
 
   createMouseEffects() {
+    console.log("createMouseEffects()");
     const {
       height,
       width,
       margin: { top, bottom, left, right },
       xScale,
       yScale,
+      focus,
       state: { data }
     } = this;
-    const dates = data.map(d => d.date);
-    const money = data.map(d => d.data);
-    const mouseGroup = this.svg.append("g").attr("class", "mouse-effects");
-    const mouseLine = mouseGroup
-      .append("path")
-      .attr("class", "mouse-line")
-      .style("stroke", "#3d3d3d")
-      .style("stroke-width", "1px")
-      .style("opacity", "0");
-    const circleGroup = mouseGroup
-      .append("g")
-      .attr("class", "circle-group")
-      .append("circle")
-      .attr("r", "4")
-      .style("stroke", "green")
-      .style("fill", "none")
-      .style("stroke-width", "1px")
-      .style("opacity", 0);
-    mouseGroup
-      .append("svg:rect")
-      .attr("transform", `translate(${left}, ${top})`)
-      .attr("width", width)
-      .attr("height", height)
-      .attr("fill", "none")
-      .attr("pointer-events", "all")
-      .attr("class", "mouse-event-catcher")
-      .on("mouseout", () => {
-        d3.select(".mouse-line").style("opacity", "0");
-        d3.select("circle").style("opacity", "0");
-      })
-      .on("mouseover", () => {
-        d3.select(".mouse-line").style("opacity", "1");
-        d3.select("circle").style("opacity", "1");
-      })
+
+    d3
+      .select(".overlay")
+      .on("mouseover", () => focus.style("display", null))
+      .on("mouseout", () => focus.style("display", "none"))
       .on("mousemove", function() {
         const [x] = d3.mouse(this);
-        d3
-          .select(".mouse-line")
-          .attr("d", () => `M${x + left},${height + top} ${x + left},0`);
+        const date = xScale.invert(x);
+        const bisectDate = d3.bisector(d => d.date).left;
+        const i = bisectDate(data, date, 1);
+        const d0 = data[i - 1];
+        const d1 = data[i];
+        const d = x - d0.date > d1.date - x ? d1 : d0;
+        focus.attr(
+          "transform",
+          `translate(${xScale(d.date) + left}, ${yScale(d.data) + top})`
+        );
+        focus
+          .select("line.x")
+          .attr("x1", 0)
+          .attr("x2", -xScale(d.date))
+          .attr("y1", 0)
+          .attr("y2", 0);
+
+        focus
+          .select("line.y")
+          .attr("x1", 0)
+          .attr("x2", 0)
+          .attr("y1", 0)
+          .attr("y2", height - yScale(d.data));
       });
   }
 
@@ -156,11 +210,11 @@ class LineChart extends Component {
       .domain(d3.extent(data.map(d => d.data)))
       .rangeRound([this.height, 0]);
 
-    this.renderChart();
-    this.createMouseEffects();
+    this.onResize();
   }
 
   renderChart() {
+    console.log("renderChart()");
     const { data } = this.state;
     // clear the chart
     this.svg.html("");
