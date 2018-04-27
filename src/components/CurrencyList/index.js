@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -55,8 +55,7 @@ export class CurrencyList extends Component {
 
   render() {
     const { loading } = this.props;
-
-    return (
+    const main = (
       <div>
         {this.state.byRank.length > 0 ? (
           <BarChart data={this.state.byRank} />
@@ -67,10 +66,12 @@ export class CurrencyList extends Component {
           style={{ height: "50vh", overflowY: "scroll" }}
           className="currency-list"
         >
-          {loading ? <Loader /> : this.renderCurrencies()}
+          {this.renderCurrencies()}
         </ul>
       </div>
     );
+
+    return <Fragment>{loading ? <Loader /> : main}</Fragment>;
   }
 }
 

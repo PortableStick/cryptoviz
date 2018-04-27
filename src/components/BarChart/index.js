@@ -12,6 +12,9 @@ class BarChart extends Component {
       bottom: 40,
       left: 90
     };
+
+    this.yLabel = "Market Capactiy (USD)";
+    this.xLabel = "";
     this.xScale = d3.scaleBand().padding(0.5);
     this.yScale = d3.scaleLinear();
     this.tooltipStyles = {
@@ -105,6 +108,19 @@ class BarChart extends Component {
       ...axesStyles,
       display: "none"
     });
+
+    this.svg
+      .append("text")
+      .attr(
+        "transform",
+        "translate(" +
+          this.width / 2 +
+          " ," +
+          (this.height + this.margin.top + 20) +
+          ")"
+      )
+      .style("text-anchor", "middle")
+      .text(this.xLabel);
   }
 
   createYAxis() {
@@ -113,6 +129,15 @@ class BarChart extends Component {
       .attr("class", "yaxis")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
       .call(d3.axisLeft(this.yScale).ticks(4));
+
+    this.svg
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", this.margin.left)
+      .attr("x", 0 - this.height / 2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text(this.yLabel);
   }
 
   componentDidUpdate() {
