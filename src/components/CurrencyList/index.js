@@ -8,14 +8,6 @@ import BarChart from "../BarChart";
 import actions from "../../actions";
 
 export class CurrencyList extends Component {
-  constructor(props) {
-    super(props);
-    props.fetchCurrencyData();
-    this.state = {
-      byRank: props.currencyData.slice(0, props.listLength)
-    };
-  }
-
   static propTypes = {
     listLength: PropTypes.number,
     currencyData: PropTypes.arrayOf(
@@ -37,13 +29,16 @@ export class CurrencyList extends Component {
     loading: PropTypes.bool.isRequired,
     fetchCurrencyData: PropTypes.func.isRequired
   };
+
   static defaultProps = {
     listLength: 20
   };
 
-  static getDerivedStateFromProps(newProps) {
-    return {
-      byRank: newProps.currencyData.slice(0, newProps.listLength)
+  constructor(props) {
+    super(props);
+    props.fetchCurrencyData();
+    this.state = {
+      byRank: props.currencyData.slice(0, props.listLength)
     };
   }
 
@@ -53,6 +48,12 @@ export class CurrencyList extends Component {
     ));
   }
 
+  static getDerivedStateFromProps(newProps) {
+    return {
+      byRank: newProps.currencyData.slice(0, newProps.listLength)
+    };
+  }
+
   render() {
     const { loading } = this.props;
     const main = (
@@ -60,7 +61,7 @@ export class CurrencyList extends Component {
         {this.state.byRank.length > 0 ? (
           <BarChart data={this.state.byRank} />
         ) : (
-          ""
+          <Fragment />
         )}
         <ul
           style={{ height: "50vh", overflowY: "scroll" }}

@@ -1,6 +1,6 @@
 import { combineReducers, createStore, applyMiddleware, compose } from "redux";
 import dataService from "../middleware";
-import { rootReducer, flagsReducer, specializedReducer } from "../reducers";
+import { rootReducer, flagsReducer, individualDataReducer } from "../reducers";
 
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -12,7 +12,7 @@ const composeEnhancers =
 const reducers = combineReducers({
   rootReducer,
   flagsReducer,
-  specializedReducer
+  individualDataReducer
 });
 
 const middleware = applyMiddleware(

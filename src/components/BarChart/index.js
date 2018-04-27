@@ -3,30 +3,40 @@ import * as d3 from "d3";
 import PropTypes from "prop-types";
 
 class BarChart extends Component {
+  static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object)
+  };
+
+  static defaultProps = {
+    data: [],
+    maxWindowWidth: 1000
+  };
+
+  margin = {
+    top: 30,
+    right: 30,
+    bottom: 40,
+    left: 90
+  };
+
+  yLabel = "Market Capactiy (USD)";
+  xLabel = "";
+  xScale = d3.scaleBand().padding(0.5);
+  yScale = d3.scaleLinear();
+  tooltipStyles = {
+    opacity: 0,
+    position: "absolute",
+    display: "flex",
+    width: "150px",
+    height: "50px",
+    backgroundColor: "white",
+    color: "black",
+    border: "1px solid black"
+  };
+
   constructor(props) {
     super(props);
     this.maxWindowWidth = props.maxWindowWidth;
-    this.margin = {
-      top: 30,
-      right: 30,
-      bottom: 40,
-      left: 90
-    };
-
-    this.yLabel = "Market Capactiy (USD)";
-    this.xLabel = "";
-    this.xScale = d3.scaleBand().padding(0.5);
-    this.yScale = d3.scaleLinear();
-    this.tooltipStyles = {
-      opacity: 0,
-      position: "absolute",
-      display: "flex",
-      width: "150px",
-      height: "50px",
-      backgroundColor: "white",
-      color: "black",
-      border: "1px solid black"
-    };
   }
 
   onResize() {
@@ -38,14 +48,8 @@ class BarChart extends Component {
     this.renderChart();
   }
 
-  componentDidMount() {
-    this.tooltip = d3.select(".tooltip");
-    this.onResize();
-    window.addEventListener("resize", this.onResize.bind(this));
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize.bind(this));
+  clearChart() {
+    this.svg.html("");
   }
 
   resizeChart() {
@@ -60,15 +64,6 @@ class BarChart extends Component {
     this.xScale.rangeRound([0, this.width]);
     this.yScale.rangeRound([this.height, 0]);
   }
-
-  static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object)
-  };
-
-  static defaultProps = {
-    data: [],
-    maxWindowWidth: 1000
-  };
 
   addStyles(el, styles) {
     for (let style in styles) {
@@ -139,14 +134,6 @@ class BarChart extends Component {
       .text(this.yLabel);
   }
 
-  componentDidUpdate() {
-    this.onResize();
-  }
-
-  clearChart() {
-    this.svg.html("");
-  }
-
   renderChart() {
     const { data } = this.props;
     const g = this.svg
@@ -168,6 +155,19 @@ class BarChart extends Component {
     this.createYAxis();
   }
 
+  componentDidMount() {
+    this.tooltip = d3.select(".tooltip");
+    this.onResize();
+    window.addEventListener("resize", this.onResize.bind(this));
+  }
+
+  componentDidUpdate() {
+    this.onResize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize.bind(this));
+  }
   render() {
     return (
       <div>

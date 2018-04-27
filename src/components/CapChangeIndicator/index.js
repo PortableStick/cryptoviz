@@ -4,15 +4,18 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 function CapChangeIndicator({ capChange }) {
   let icon = "minus";
+
   const wrapperStyle = {
     display: "inline-flex",
     justifyContent: "space-around",
     alignContent: "center",
     margin: "0 10px"
   };
+
   const iconStyle = {
     color: "grey"
   };
+
   switch (true) {
     case capChange > 0:
       iconStyle.color = "lime";

@@ -3,10 +3,10 @@ import {
   initialState,
   rootReducer,
   flagsReducer,
-  specializedReducer
+  individualDataReducer
 } from "../../src/reducers";
 
-const { root, flags, specialized } = initialState;
+const { root, flags, individualData } = initialState;
 
 const testData = [1, 2, 3, 4];
 const testError = "this is an error";
@@ -127,9 +127,9 @@ describe("flagsReducer", () => {
   });
 });
 
-describe("specializedReducer", () => {
+describe("individualDataReducer", () => {
   it("should return the initial state if nothing is passed", () => {
-    expect(specializedReducer(undefined, {})).toEqual(specialized);
+    expect(individualDataReducer(undefined, {})).toEqual(individualData);
   });
 
   it("should set the data for an individual currency when passed the receiveCurrencyPageData action", () => {
@@ -138,10 +138,12 @@ describe("specializedReducer", () => {
       payload: testData
     };
     const expectedState = {
-      ...specialized,
+      ...individualData,
       data: testData
     };
-    expect(specializedReducer(specialized, testAction)).toEqual(expectedState);
+    expect(individualDataReducer(individualData, testAction)).toEqual(
+      expectedState
+    );
   });
 
   it("should set the error field when passed the handleError action", () => {
@@ -150,21 +152,25 @@ describe("specializedReducer", () => {
       payload: testError
     };
     const expectedState = {
-      ...specialized,
+      ...individualData,
       error: testError
     };
 
-    expect(specializedReducer(specialized, testAction)).toEqual(expectedState);
+    expect(individualDataReducer(individualData, testAction)).toEqual(
+      expectedState
+    );
   });
 
   it("should reset the error field when passed the clearError action", () => {
     const testState = {
-      ...specialized,
+      ...individualData,
       error: testError
     };
     const testAction = {
       type: types.clearError
     };
-    expect(specializedReducer(testState, testAction)).toEqual(specialized);
+    expect(individualDataReducer(testState, testAction)).toEqual(
+      individualData
+    );
   });
 });

@@ -9,7 +9,7 @@ export const initialState = {
     loading: false,
     error: false
   },
-  specialized: {
+  individualData: {
     data: {},
     error: null
   }
@@ -69,7 +69,10 @@ export function flagsReducer(state = initialState.flags, action) {
   }
 }
 
-export function specializedReducer(state = initialState.specialized, action) {
+export function individualDataReducer(
+  state = initialState.individualData,
+  action
+) {
   switch (action.type) {
     case types.handleError:
       return {

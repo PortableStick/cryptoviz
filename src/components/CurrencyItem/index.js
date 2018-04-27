@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import RankIndicator from "../RankIndicator";
 import CurrencySprite from "../CurrencySprite";
 import CapChangeIndicator from "../CapChangeIndicator";
+
 import { formatInteger, formatMoney } from "../../utils";
 
 function CurrencyItem(props) {
@@ -56,15 +57,8 @@ CurrencyItem.propTypes = {
   cap24hrChange: PropTypes.number.isRequired,
   long: PropTypes.string.isRequired,
   mktcap: PropTypes.number.isRequired,
-  // perc: PropTypes.number.isRequired,
-  // price: PropTypes.number.isRequired,
-  // shapeshift: PropTypes.bool.isRequired,
   short: PropTypes.string.isRequired,
-  // supply: PropTypes.number.isRequired,
   usdVolume: PropTypes.number.isRequired
-  // volume: PropTypes.number.isRequired,
-  // vwapData: PropTypes.number.isRequired,
-  // vwapDataBTC: PropTypes.number.isRequired,
 };
 
 export default CurrencyItem;

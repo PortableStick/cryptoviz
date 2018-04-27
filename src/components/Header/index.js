@@ -1,11 +1,18 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import ReactAutocomplete from "react-autocomplete";
+
 import CurrencySprite from "../CurrencySprite";
 import { connect } from "react-redux";
 import actions from "../../actions";
 
 export class Header extends Component {
+  static propTypes = {
+    fetchCurrencyData: PropTypes.func.isRequired,
+    currencyData: PropTypes.arrayOf(PropTypes.object)
+  };
+
   constructor(props) {
     super(props);
     if (!props.loading && props.currencyData.length === 0) {
@@ -69,4 +76,5 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchCurrencyData: () => dispatch(actions.fetchCurrencyData())
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

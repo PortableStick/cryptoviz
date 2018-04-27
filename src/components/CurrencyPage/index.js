@@ -8,14 +8,66 @@ import CapChangeIndicator from "../CapChangeIndicator";
 import RankIndicator from "../RankIndicator";
 import CurrencySprite from "../CurrencySprite";
 import Loader from "../Loader";
+
 import actions from "../../actions";
 import { formatInteger, formatMoney } from "../../utils";
 
-const tdStyle = {
-  minWidth: "150px"
-};
-
 export class CurrencyPage extends Component {
+  static propTypes = {
+    loading: PropTypes.bool.isRequired,
+    dom: PropTypes.number,
+    id: PropTypes.string,
+    price_btc: PropTypes.number,
+    price_eth: PropTypes.number,
+    price_ltc: PropTypes.number,
+    price_zec: PropTypes.number,
+    price_eur: PropTypes.number,
+    price_usd: PropTypes.number,
+    market_cap: PropTypes.number,
+    cap24hrChange: PropTypes.number,
+    display_name: PropTypes.string,
+    supply: PropTypes.number,
+    volume: PropTypes.number,
+    rank: PropTypes.number,
+    marketData: PropTypes.shape({
+      market_cap: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+      price: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+      volume: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+    }),
+    fetchCurrencyPageData: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        name: PropTypes.string
+      })
+    }).isRequired
+  };
+
+  static defaultProps = {
+    id: "",
+    display_name: "",
+    rank: 0,
+    price_usd: 0,
+    price_btc: 0,
+    price_eth: 0,
+    price_ltc: 0,
+    price_zec: 0,
+    price_eur: 0,
+    cap24hrChange: 0,
+    dom: 0,
+    market_cap: 0,
+    supply: 0,
+    volume: 0,
+    marketData: {
+      volume: [],
+      market_cap: [],
+      price: []
+    }
+  };
+
+  tdStyle = {
+    minWidth: "150px"
+  };
+
   constructor(props) {
     super(props);
     props.fetchCurrencyPageData(props.match.params.name);
@@ -113,12 +165,12 @@ export class CurrencyPage extends Component {
             </thead>
             <tbody>
               <tr>
-                <td style={tdStyle}>{this.props.price_usd}</td>
-                <td style={tdStyle}>{this.props.price_eur}</td>
-                <td style={tdStyle}>{this.props.price_btc}</td>
-                <td style={tdStyle}>{this.props.price_eth}</td>
-                <td style={tdStyle}>{this.props.price_ltc}</td>
-                <td style={tdStyle}>{this.props.price_zec}</td>
+                <td style={this.tdStyle}>{this.props.price_usd}</td>
+                <td style={this.tdStyle}>{this.props.price_eur}</td>
+                <td style={this.tdStyle}>{this.props.price_btc}</td>
+                <td style={this.tdStyle}>{this.props.price_eth}</td>
+                <td style={this.tdStyle}>{this.props.price_ltc}</td>
+                <td style={this.tdStyle}>{this.props.price_zec}</td>
               </tr>
             </tbody>
           </table>
@@ -136,73 +188,8 @@ export class CurrencyPage extends Component {
   }
 }
 
-CurrencyPage.defaultProps = {
-  id: "",
-  display_name: "",
-  rank: 0,
-  price_usd: 0,
-  price_btc: 0,
-  price_eth: 0,
-  price_ltc: 0,
-  price_zec: 0,
-  price_eur: 0,
-  cap24hrChange: 0,
-  dom: 0,
-  market_cap: 0,
-  supply: 0,
-  volume: 0,
-  marketData: {
-    volume: [],
-    market_cap: [],
-    price: []
-  }
-};
-
-CurrencyPage.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  // altCap: PropTypes.number,
-  // bitnodesCount:PropTypes.number,
-  // btcCap: PropTypes.number,
-  // btcPrice: PropTypes.number,
-  dom: PropTypes.number,
-  // totalCap: PropTypes.number,
-  // volumeAlt: PropTypes.number,
-  // volumeBtc: PropTypes.number,
-  // volumeTotal: PropTypes.number,
-  id: PropTypes.string,
-  // type: PropTypes.string,
-  // _id: PropTypes.string,
-  price_btc: PropTypes.number,
-  price_eth: PropTypes.number,
-  price_ltc: PropTypes.number,
-  price_zec: PropTypes.number,
-  price_eur: PropTypes.number,
-  price_usd: PropTypes.number,
-  market_cap: PropTypes.number,
-  cap24hrChange: PropTypes.number,
-  display_name: PropTypes.string,
-  // status: PropTypes.string,
-  supply: PropTypes.number,
-  volume: PropTypes.number,
-  // price: PropTypes.number,
-  // vwap_h24: PropTypes.number,
-  rank: PropTypes.number,
-  // alt_name: PropTypes.string,
-  marketData: PropTypes.shape({
-    market_cap: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    price: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    volume: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
-  }),
-  fetchCurrencyPageData: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      name: PropTypes.string
-    })
-  }).isRequired
-};
-
 const mapStateToProps = state => ({
-  ...state.specializedReducer.data,
+  ...state.individualDataReducer.data,
   ...state.flagsReducer
 });
 
