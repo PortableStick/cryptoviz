@@ -62,6 +62,7 @@ class LineChart extends Component {
       this.clearChart();
     }
     this.resizeChart();
+    this.updateDomains();
     this.renderChart();
     this.setupFocus();
     this.setupOverlay();
@@ -83,6 +84,17 @@ class LineChart extends Component {
       .attr("height", _h);
     this.xScale.rangeRound([0, this.width]);
     this.yScale.rangeRound([this.height, 0]);
+  }
+
+  updateDomains() {
+    const { data } = this.state;
+    const xDomain = data.map(d => d.date);
+
+    this.xScale.domain(d3.extent(xDomain)).rangeRound([0, this.width]);
+
+    this.yScale
+      .domain(d3.extent(data.map(d => d.data)))
+      .rangeRound([this.height, 0]);
   }
 
   setupFocus() {
@@ -272,15 +284,6 @@ class LineChart extends Component {
   }
 
   componentDidUpdate() {
-    const { data } = this.state;
-    const xDomain = data.map(d => d.date);
-
-    this.xScale.domain(d3.extent(xDomain)).rangeRound([0, this.width]);
-
-    this.yScale
-      .domain(d3.extent(data.map(d => d.data)))
-      .rangeRound([this.height, 0]);
-
     this.onResize();
   }
 

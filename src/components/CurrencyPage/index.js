@@ -72,11 +72,24 @@ export class CurrencyPage extends Component {
 
   constructor(props) {
     super(props);
-    props.fetchCurrencyPageData(props.match.params.name);
+    this.state = {
+      current: props.match.params.name
+    };
+    props.fetchCurrencyPageData(this.state.current);
+  }
+
+  static getDerivedStateFromProps(newProps, prevState) {
+    const name = newProps.match.params.name;
+    if (prevState.current !== name) {
+      newProps.fetchCurrencyPageData(name);
+    }
+    return {
+      current: name
+    };
   }
 
   componentWillUnmount() {
-    props.clearIndividualData();
+    this.props.clearIndividualData();
   }
 
   renderCurrencyPageData() {
