@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import ReactAutocomplete from "react-autocomplete";
 import CurrencySprite from "../CurrencySprite";
 import { connect } from "react-redux";
+import actions from "../../actions";
 
 export class Header extends Component {
   constructor(props) {
     super(props);
+    if (!props.loading && props.currencyData.length === 0) {
+      props.fetchCurrencyData();
+    }
     this.state = {
       filter: ""
     };
@@ -58,6 +62,11 @@ export class Header extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.rootReducer });
-
-export default connect(mapStateToProps)(Header);
+const mapStateToProps = state => ({
+  ...state.rootReducer,
+  ...state.flagsReducer
+});
+const mapDispatchToProps = dispatch => ({
+  fetchCurrencyData: () => dispatch(actions.fetchCurrencyData())
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
