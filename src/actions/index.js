@@ -7,12 +7,12 @@ const actions = {
     type: types.receiveCurrencyData,
     payload: data
   }),
-  fetchSpecializedData: data => ({
-    type: types.fetchSpecializedData,
+  fetchCurrencyPageData: data => ({
+    type: types.fetchCurrencyPageData,
     payload: data
   }),
-  receiveSpecializedData: data => ({
-    type: types.receiveSpecializedData,
+  receiveCurrencyPageData: data => ({
+    type: types.receiveCurrencyPageData,
     payload: data
   }),
   fetchMarketData: () => ({ type: types.fetchMarketData }),

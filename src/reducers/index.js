@@ -59,7 +59,7 @@ export function flagsReducer(state = initialState.flags, action) {
         ...state,
         loading: false
       };
-    case types.receiveSpecializedData:
+    case types.receiveCurrencyPageData:
       return {
         ...state,
         loading: false
@@ -81,7 +81,7 @@ export function specializedReducer(state = initialState.specialized, action) {
         ...state,
         error: null
       };
-    case types.receiveSpecializedData:
+    case types.receiveCurrencyPageData:
       return {
         ...state,
         data: action.payload

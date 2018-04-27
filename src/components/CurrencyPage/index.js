@@ -15,13 +15,13 @@ const tdStyle = {
   minWidth: "150px"
 };
 
-export class Specialized extends Component {
+export class CurrencyPage extends Component {
   constructor(props) {
     super(props);
-    props.fetchSpecializedData(props.match.params.name);
+    props.fetchCurrencyPageData(props.match.params.name);
   }
 
-  renderSpecializedData() {
+  renderCurrencyPageData() {
     return (
       <Fragment>
         <section className="hero is-primary">
@@ -130,13 +130,13 @@ export class Specialized extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.loading ? <Loader /> : this.renderSpecializedData()}
+        {this.props.loading ? <Loader /> : this.renderCurrencyPageData()}
       </Fragment>
     );
   }
 }
 
-Specialized.defaultProps = {
+CurrencyPage.defaultProps = {
   id: "",
   display_name: "",
   rank: 0,
@@ -158,7 +158,7 @@ Specialized.defaultProps = {
   }
 };
 
-Specialized.propTypes = {
+CurrencyPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   // altCap: PropTypes.number,
   // bitnodesCount:PropTypes.number,
@@ -193,7 +193,7 @@ Specialized.propTypes = {
     price: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     volume: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
   }),
-  fetchSpecializedData: PropTypes.func.isRequired,
+  fetchCurrencyPageData: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       name: PropTypes.string
@@ -207,7 +207,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSpecializedData: name => dispatch(actions.fetchSpecializedData(name))
+  fetchCurrencyPageData: name => dispatch(actions.fetchCurrencyPageData(name))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Specialized);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencyPage);
