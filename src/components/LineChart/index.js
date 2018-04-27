@@ -16,8 +16,15 @@ class LineChart extends Component {
       dates: [],
       data: []
     };
-    this.x = d3.scaleTime();
-    this.y = d3.scaleLinear();
+    this.xScale = d3.scaleTime();
+    this.yScale = d3.scaleLinear();
+    this.tooltipStyles = {
+      opacity: 0,
+      position: "absolute",
+      display: "flex",
+      width: "150px",
+      height: "50px"
+    };
   }
 
   static propTypes = {
@@ -31,8 +38,9 @@ class LineChart extends Component {
   };
 
   static getDerivedStateFromProps(newProps) {
+    const { isoParse } = d3;
     const data = newProps.data.map(d => ({
-      date: new Date(+d[0]),
+      date: isoParse(+d[0]),
       data: +d[1]
     }));
 
@@ -65,18 +73,8 @@ class LineChart extends Component {
       .select("svg.line-chart")
       .attr("width", _w)
       .attr("height", _h);
-    this.x.rangeRound([0, this.width]);
-    this.y.rangeRound([this.height, 0]);
-  }
-
-  createYAxis() {
-    this.svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(${this.margin.right + this.margin.left}, ${this.margin.top})`
-      )
-      .call(d3.axisRight(this.y));
+    this.xScale.rangeRound([0, this.width]);
+    this.yScale.rangeRound([this.height, 0]);
   }
 
   createXAxis() {
@@ -86,7 +84,7 @@ class LineChart extends Component {
         "transform",
         `translate(${this.margin.left}, ${this.height + this.margin.top})`
       )
-      .call(d3.axisBottom(this.x));
+      .call(d3.axisBottom(this.xScale));
   }
 
   createYAxis() {
@@ -94,15 +92,20 @@ class LineChart extends Component {
       .append("g")
       .attr("class", "yaxis")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
-      .call(d3.axisRight(this.y));
+      .call(d3.axisRight(this.yScale));
   }
 
   createMouseEffects() {
     const {
       height,
       width,
-      margin: { top, bottom, left, right }
+      margin: { top, bottom, left, right },
+      xScale,
+      yScale,
+      state: { data }
     } = this;
+    const dates = data.map(d => d.date);
+    const money = data.map(d => d.data);
     const mouseGroup = this.svg.append("g").attr("class", "mouse-effects");
     const mouseLine = mouseGroup
       .append("path")
@@ -110,6 +113,15 @@ class LineChart extends Component {
       .style("stroke", "#3d3d3d")
       .style("stroke-width", "1px")
       .style("opacity", "0");
+    const circleGroup = mouseGroup
+      .append("g")
+      .attr("class", "circle-group")
+      .append("circle")
+      .attr("r", "4")
+      .style("stroke", "green")
+      .style("fill", "none")
+      .style("stroke-width", "1px")
+      .style("opacity", 0);
     mouseGroup
       .append("svg:rect")
       .attr("transform", `translate(${left}, ${top})`)
@@ -118,8 +130,14 @@ class LineChart extends Component {
       .attr("fill", "none")
       .attr("pointer-events", "all")
       .attr("class", "mouse-event-catcher")
-      .on("mouseout", () => d3.select(".mouse-line").style("opacity", "0"))
-      .on("mouseover", () => d3.select(".mouse-line").style("opacity", "1"))
+      .on("mouseout", () => {
+        d3.select(".mouse-line").style("opacity", "0");
+        d3.select("circle").style("opacity", "0");
+      })
+      .on("mouseover", () => {
+        d3.select(".mouse-line").style("opacity", "1");
+        d3.select("circle").style("opacity", "1");
+      })
       .on("mousemove", function() {
         const [x] = d3.mouse(this);
         d3
@@ -130,9 +148,11 @@ class LineChart extends Component {
 
   componentDidUpdate() {
     const { data } = this.state;
+    const xDomain = data.map(d => d.date);
 
-    this.x.domain(d3.extent(data.map(d => d.date))).rangeRound([0, this.width]);
-    this.y
+    this.xScale.domain(d3.extent(xDomain)).rangeRound([0, this.width]);
+
+    this.yScale
       .domain(d3.extent(data.map(d => d.data)))
       .rangeRound([this.height, 0]);
 
@@ -150,8 +170,8 @@ class LineChart extends Component {
       .attr("transform", `translate(${this.margin.left},${this.margin.top})`);
     const line = d3
       .line()
-      .x(d => this.x(d.date))
-      .y(d => this.y(d.data));
+      .x(d => this.xScale(d.date))
+      .y(d => this.yScale(d.data));
     g
       .append("path")
       .datum(this.state.data)
@@ -170,6 +190,9 @@ class LineChart extends Component {
     return (
       <div>
         <svg className="line-chart" />
+        <div className="tooltip" style={this.tooltipStyles}>
+          Surprise!
+        </div>
       </div>
     );
   }
