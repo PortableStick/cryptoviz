@@ -82,7 +82,7 @@
       "json-server --routes ./routes.json --watch ./currency.db.json --port 3001 --read-only --quiet",
     "start:dev": "npm run dev-server & node scripts/start.js",
     "start:live":
-      "export REACT_APP_BASE_URL='http://coincap.io' && npm run start",
+      "export REACT_APP_BASE_URL='http://coincap.io' && node scripts/start.js",
     "start": "npm run start:live",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
