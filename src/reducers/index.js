@@ -1,18 +1,18 @@
-import { types } from '../constants';
+import { types } from "../constants";
 
 export const initialState = {
   root: {
     currencyData: [],
-    error: null,
+    error: null
   },
   flags: {
     loading: false,
-    error: false,
+    error: false
   },
   specialized: {
     data: {},
-    error: null,
-  },
+    error: null
+  }
 };
 
 export function rootReducer(state = initialState.root, action) {
@@ -20,17 +20,17 @@ export function rootReducer(state = initialState.root, action) {
     case types.handleError:
       return {
         ...state,
-        error: action.payload,
+        error: action.payload
       };
     case types.receiveCurrencyData:
       return {
         ...state,
-        currencyData: action.payload,
+        currencyData: action.payload
       };
     case types.clearError:
       return {
         ...state,
-        error: null,
+        error: null
       };
     default:
       return state;
@@ -42,27 +42,27 @@ export function flagsReducer(state = initialState.flags, action) {
     case types.handleError:
       return {
         ...state,
-        error: true,
+        error: true
       };
     case types.clearError:
       return {
         ...state,
-        error: false,
+        error: false
       };
     case types.loading:
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     case types.receiveCurrencyData:
       return {
         ...state,
-        loading: false,
+        loading: false
       };
     case types.receiveSpecializedData:
       return {
         ...state,
-        loading: false,
+        loading: false
       };
     default:
       return state;
@@ -74,17 +74,17 @@ export function specializedReducer(state = initialState.specialized, action) {
     case types.handleError:
       return {
         ...state,
-        error: action.payload,
+        error: action.payload
       };
     case types.clearError:
       return {
         ...state,
-        error: null,
+        error: null
       };
     case types.receiveSpecializedData:
       return {
         ...state,
-        data: action.payload,
+        data: action.payload
       };
     default:
       return state;
