@@ -39,10 +39,12 @@ export class CurrencyPage extends Component {
       params: PropTypes.shape({
         name: PropTypes.string
       })
-    }).isRequired
+    }).isRequired,
+    search: PropTypes.bool
   };
 
   static defaultProps = {
+    search: false,
     id: "",
     display_name: "",
     rank: 0,
@@ -71,6 +73,10 @@ export class CurrencyPage extends Component {
   constructor(props) {
     super(props);
     props.fetchCurrencyPageData(props.match.params.name);
+  }
+
+  componentWillUnmount() {
+    props.clearIndividualData();
   }
 
   renderCurrencyPageData() {
@@ -194,7 +200,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrencyPageData: name => dispatch(actions.fetchCurrencyPageData(name))
+  fetchCurrencyPageData: name => dispatch(actions.fetchCurrencyPageData(name)),
+  clearIndividualData: () => dispatch(actions.clearIndividualData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyPage);

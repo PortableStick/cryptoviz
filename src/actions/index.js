@@ -18,7 +18,8 @@ const actions = {
   fetchMarketData: () => ({ type: types.fetchMarketData }),
   receiveMarketData: data => ({ type: types.receiveMarketData, payload: data }),
   handleError: error => ({ type: types.handleError, payload: error }),
-  clearError: () => ({ type: types.clearError })
+  clearError: () => ({ type: types.clearError }),
+  clearIndividualData: () => ({ type: types.clearIndividualData })
 };
 
 export default actions;

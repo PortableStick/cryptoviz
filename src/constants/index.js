@@ -7,5 +7,6 @@ export const types = {
   fetchMarketData: "FETCH_MARKET_DATA",
   receiveMarketData: "RECEIVE_MARKET_DATA",
   handleError: "HANDLE_ERROR",
-  clearError: "CLEAR_ERROR"
+  clearError: "CLEAR_ERROR",
+  clearIndividualData: "CLEAR_INDIVIDUAL_DATA"
 };

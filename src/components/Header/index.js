@@ -15,9 +15,9 @@ export class Header extends Component {
 
   constructor(props) {
     super(props);
-    if (!props.loading && props.currencyData.length === 0) {
-      props.fetchCurrencyData();
-    }
+    //if (!props.loading && props.currencyData.length === 0) {
+    //props.fetchCurrencyData();
+    //}
     this.state = {
       filter: ""
     };
@@ -43,7 +43,9 @@ export class Header extends Component {
             items={this.props.currencyData}
             renderItem={(item, isHighlited) => (
               <div>
-                <Link to={`/${item.short}`}>
+                <Link
+                  to={{ pathname: `/${item.short}`, state: { search: true } }}
+                >
                   <CurrencySprite currency={item.long} /> {item.long}
                 </Link>
               </div>

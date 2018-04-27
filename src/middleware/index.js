@@ -15,6 +15,7 @@ export default function bindMiddleware(dataService) {
               .then(currency => next(actions.receiveCurrencyData(currency)))
               .catch(error => next(actions.handleError(error)));
           case types.fetchCurrencyPageData:
+            next(actions.flagLoading());
             return Promise.all([
               dataService(`${baseUrl}/page/${action.payload}`),
               dataService(`${baseUrl}/history/${action.payload}`)

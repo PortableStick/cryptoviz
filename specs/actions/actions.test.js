@@ -102,4 +102,14 @@ describe("action creators", () => {
       expect(actions.clearError()).toEqual(expectedAction);
     });
   });
+
+  describe("CLEAR_INDIVIDUAL_DATA", () => {
+    it("should create an action that clears individual currency data", () => {
+      const expectedAction = {
+        type: types.clearIndividualData
+      };
+
+      expect(actions.clearIndividualData()).toEqual(expectedAction);
+    });
+  });
 });

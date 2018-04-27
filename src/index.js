@@ -12,6 +12,8 @@ import "./sprites.css";
 import registerServiceWorker from "./registerServiceWorker";
 import initFaLibrary from "./initFaLibrary";
 
+initFaLibrary();
+
 ReactDOM.render(
   <Provider store={store}>
     <Router>
@@ -21,5 +23,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-initFaLibrary();
 registerServiceWorker();

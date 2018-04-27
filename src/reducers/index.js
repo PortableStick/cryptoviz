@@ -89,6 +89,11 @@ export function individualDataReducer(
         ...state,
         data: action.payload
       };
+    case types.clearIndividualData:
+      return {
+        ...state,
+        data: initialState.individualData.data
+      };
     default:
       return state;
   }

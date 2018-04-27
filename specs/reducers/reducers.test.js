@@ -173,4 +173,19 @@ describe("individualDataReducer", () => {
       individualData
     );
   });
+
+  it("should clear the individual currency data when passed the clearIndividualData action", () => {
+    const testState = {
+      ...individualData,
+      data: ["something"]
+    };
+
+    const testAction = {
+      type: types.clearIndividualData
+    };
+
+    expect(individualDataReducer(testState, testAction)).toEqual(
+      individualData
+    );
+  });
 });
