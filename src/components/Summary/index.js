@@ -12,10 +12,22 @@ export class Summary extends Component {
     props.fetchCurrencyData();
   }
 
+  static propTypes = {
+    listLength: PropTypes.number,
+    currencyData: PropTypes.arrayOf(currencyInfo).isRequired,
+    loading: PropTypes.bool.isRequired,
+    fetchCurrencyData: PropTypes.func.isRequired
+  };
+  static defaultProps = {
+    listLength: 20
+  };
+
   renderCurrencies() {
-    return this.props.currencyData.map((c, i) => (
-      <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />
-    ));
+    return this.props.currencyData
+      .slice(0, this.props.listLength)
+      .map((c, i) => (
+        <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />
+      ));
   }
 
   render() {
@@ -45,12 +57,6 @@ const currencyInfo = PropTypes.shape({
   vwapData: PropTypes.number,
   vwapDataBTC: PropTypes.number
 });
-
-Summary.propTypes = {
-  currencyData: PropTypes.arrayOf(currencyInfo).isRequired,
-  loading: PropTypes.bool.isRequired,
-  fetchCurrencyData: PropTypes.func.isRequired
-};
 
 const mapStateToProps = state => ({
   ...state.rootReducer,
