@@ -64,6 +64,9 @@ export class Header extends Component {
                 />
               );
             }}
+            inputProps={{
+              placeholder: "search for a coin"
+            }}
           />
         </div>
       </nav>

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import PropTypes from "prop-types";
 
+import { formatMoney } from "../../utils";
+
 class BarChart extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object)
@@ -9,7 +11,7 @@ class BarChart extends Component {
 
   static defaultProps = {
     data: [],
-    maxWindowWidth: 1000
+    maxWindowWidth: 1600
   };
 
   margin = {
@@ -19,10 +21,10 @@ class BarChart extends Component {
     left: 90
   };
 
-  yLabel = "Market Capactiy (USD)";
+  yLabel = "Market Capacity (Million USD)";
   xLabel = "";
-  xScale = d3.scaleBand().padding(0.5);
-  yScale = d3.scaleLinear();
+  xScale = d3.scaleBand().padding(0.1);
+  yScale = d3.scaleLog();
   tooltipStyles = {
     opacity: 0,
     position: "absolute",
@@ -46,6 +48,7 @@ class BarChart extends Component {
     this.resizeChart();
     this.setupScales();
     this.renderChart();
+    this.createMouseEffects();
   }
 
   clearChart() {
@@ -121,13 +124,21 @@ class BarChart extends Component {
     this.svg
       .append("g")
       .attr("class", "yaxis")
-      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
-      .call(d3.axisLeft(this.yScale).ticks(4));
+      .attr(
+        "transform",
+        `translate(${this.margin.left - 10}, ${this.margin.top})`
+      )
+      .call(
+        d3
+          .axisLeft(this.yScale)
+          .ticks(2)
+          .tickFormat(d => `$${d / 1000000}`)
+      );
 
     this.svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", this.margin.left)
+      .attr("y", this.margin.left - 10)
       .attr("x", 0 - this.height / 2)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
@@ -155,6 +166,37 @@ class BarChart extends Component {
     this.createYAxis();
   }
 
+  createMouseEffects() {
+    const {
+      height,
+      width,
+      margin: { top, bottom, left, right },
+      xScale,
+      yScale,
+      focus,
+      tooltip
+    } = this;
+    const { data } = this.props;
+
+    d3
+      .selectAll(".bar")
+      .on("mouseover", function(d, i) {
+        const [x, y] = d3.mouse(this);
+        tooltip
+          .style("opacity", 1)
+          .style("left", `${x}px`)
+          .style("top", `${y}px`)
+          .html(
+            `<div style="text-align: center; padding-left: 10%;"><div>${
+              d.long
+            }</div><div>$${formatMoney(d.volume)}</div></div>`
+          );
+      })
+      .on("mouseout", () => {
+        tooltip.style("opacity", 0);
+      });
+  }
+
   componentDidMount() {
     this.tooltip = d3.select(".tooltip");
     this.onResize();
@@ -172,7 +214,9 @@ class BarChart extends Component {
     return (
       <div>
         <svg className="bar-chart" />
-        <div className="tooltip" style={this.tooltipStyles} />
+        <div className="tooltip" style={this.tooltipStyles}>
+          Hello!
+        </div>
       </div>
     );
   }

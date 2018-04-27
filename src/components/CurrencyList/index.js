@@ -31,7 +31,7 @@ export class CurrencyList extends Component {
   };
 
   static defaultProps = {
-    listLength: 20
+    listLength: 50
   };
 
   constructor(props) {
