@@ -57,7 +57,6 @@ class BarChart extends Component {
       .select("svg.bar-chart")
       .attr("width", _w)
       .attr("height", _h);
-    console.log(this.svg);
     this.xScale.rangeRound([0, this.width]);
     this.yScale.rangeRound([this.height, 0]);
   }

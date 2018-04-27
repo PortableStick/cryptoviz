@@ -9,11 +9,10 @@ function Loader() {
     position: "fixed",
     display: "flex",
     justifyContent: "center",
-    padding: "30%",
-    color: "white"
+    padding: "30%"
   };
   return (
-    <div style={style} className="has-background-info">
+    <div style={style} className="has-background-info has-text-white">
       <FontAwesomeIcon pulse icon="spinner" size="9x" />
     </div>
   );
