@@ -4,7 +4,6 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 function Loader() {
   const style = {
-    backgroundColor: "rgba(0,0,0,0.6)",
     width: "100%",
     height: "100%",
     position: "fixed",
@@ -14,7 +13,7 @@ function Loader() {
     color: "white"
   };
   return (
-    <div style={style}>
+    <div style={style} className="has-background-info">
       <FontAwesomeIcon pulse icon="spinner" size="9x" />
     </div>
   );
