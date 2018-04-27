@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
+import { formatMoney } from "../../utils";
+
 class LineChart extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +25,10 @@ class LineChart extends Component {
       position: "absolute",
       display: "flex",
       width: "150px",
-      height: "50px"
+      height: "50px",
+      border: "1px solid black",
+      overflow: "hidden",
+      backgroundColor: "white"
     };
   }
 
@@ -83,6 +88,7 @@ class LineChart extends Component {
   }
 
   componentDidMount() {
+    this.tooltip = d3.select(".tooltip");
     this.onResize();
     window.addEventListener("resize", this.onResize.bind(this));
   }
@@ -158,7 +164,7 @@ class LineChart extends Component {
       .append("g")
       .attr("class", "yaxis")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
-      .call(d3.axisLeft(this.yScale));
+      .call(d3.axisLeft(this.yScale).ticks(4));
   }
 
   createMouseEffects() {
@@ -170,15 +176,21 @@ class LineChart extends Component {
       xScale,
       yScale,
       focus,
+      tooltip,
       state: { data }
     } = this;
 
-    d3
-      .select(".overlay")
-      .on("mouseover", () => focus.style("display", null))
-      .on("mouseout", () => focus.style("display", "none"))
+    this.overlay
+      .on("mouseover", function() {
+        focus.style("display", null);
+        tooltip.style("opacity", "1");
+      })
+      .on("mouseout", () => {
+        focus.style("display", "none");
+        tooltip.style("opacity", "0");
+      })
       .on("mousemove", function() {
-        const [x] = d3.mouse(this);
+        const [x, y] = d3.mouse(this);
         const date = xScale.invert(x);
         const bisectDate = d3.bisector(d => d.date).left;
         const i = bisectDate(data, date, 1);
@@ -202,6 +214,11 @@ class LineChart extends Component {
           .attr("x2", 0)
           .attr("y1", 0)
           .attr("y2", height - yScale(d.data));
+
+        tooltip
+          .style("left", `${x - 69}px`)
+          .style("top", `${height + y - 10}px`)
+          .html(`<div>$${formatMoney(d.data)} ${d.date}</div>`);
       });
   }
 
