@@ -5,7 +5,8 @@ import { Header } from "../../src/components/Header";
 describe("<Header />", () => {
   it("should render", () => {
     const props = {
-      currencyData: []
+      currencyData: [],
+      fetchCurrencyData: () => ({})
     };
     const component = shallow(<Header {...props} />);
     expect(component.exists()).toEqual(true);
