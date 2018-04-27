@@ -14,7 +14,22 @@ export class Summary extends Component {
 
   static propTypes = {
     listLength: PropTypes.number,
-    currencyData: PropTypes.arrayOf(currencyInfo).isRequired,
+    currencyData: PropTypes.arrayOf(
+      PropTypes.shape({
+        cap24hrChange: PropTypes.number,
+        long: PropTypes.string,
+        mktcap: PropTypes.number,
+        perc: PropTypes.number,
+        price: PropTypes.number,
+        shapeshift: PropTypes.bool,
+        short: PropTypes.string,
+        supply: PropTypes.number,
+        usdVolume: PropTypes.number,
+        volume: PropTypes.number,
+        vwapData: PropTypes.number,
+        vwapDataBTC: PropTypes.number
+      })
+    ).isRequired,
     loading: PropTypes.bool.isRequired,
     fetchCurrencyData: PropTypes.func.isRequired
   };
@@ -42,21 +57,6 @@ export class Summary extends Component {
     );
   }
 }
-
-const currencyInfo = PropTypes.shape({
-  cap24hrChange: PropTypes.number,
-  long: PropTypes.string,
-  mktcap: PropTypes.number,
-  perc: PropTypes.number,
-  price: PropTypes.number,
-  shapeshift: PropTypes.bool,
-  short: PropTypes.string,
-  supply: PropTypes.number,
-  usdVolume: PropTypes.number,
-  volume: PropTypes.number,
-  vwapData: PropTypes.number,
-  vwapDataBTC: PropTypes.number
-});
 
 const mapStateToProps = state => ({
   ...state.rootReducer,
