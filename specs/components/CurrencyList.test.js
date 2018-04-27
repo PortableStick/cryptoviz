@@ -19,4 +19,14 @@ describe("<CurrencyList />", () => {
   it("should render each currency in a list", () => {
     expect(component.find("CurrencyItem").length).toEqual(currency.length);
   });
+
+  it("should not render more than 20 currencies by default", () => {
+    const propsWithLongList = {
+      ...props,
+      currencyData: [...currency, ...currency, ...currency]
+    };
+
+    const longList = shallow(<CurrencyList {...propsWithLongList} />);
+    expect(longList.find("CurrencyItem").length).toEqual(20);
+  });
 });

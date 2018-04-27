@@ -4,12 +4,16 @@ import { connect } from "react-redux";
 
 import CurrencyItem from "../CurrencyItem";
 import Loader from "../Loader";
+import BarChart from "../BarChart";
 import actions from "../../actions";
 
 export class CurrencyList extends Component {
   constructor(props) {
     super(props);
     props.fetchCurrencyData();
+    this.state = {
+      byRank: props.currencyData.slice(0, props.listLength)
+    };
   }
 
   static propTypes = {
@@ -37,20 +41,32 @@ export class CurrencyList extends Component {
     listLength: 20
   };
 
+  static getDerivedStateFromProps(newProps) {
+    return {
+      byRank: newProps.currencyData.slice(0, newProps.listLength)
+    };
+  }
+
   renderCurrencies() {
-    return this.props.currencyData
-      .slice(0, this.props.listLength)
-      .map((c, i) => (
-        <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />
-      ));
+    return this.state.byRank.map((c, i) => (
+      <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />
+    ));
   }
 
   render() {
     const { loading } = this.props;
 
     return (
-      <div style={{ height: "50vh", overflowY: "scroll" }}>
-        <ul className="currency-list">
+      <div>
+        {this.state.byRank.length > 0 ? (
+          <BarChart data={this.state.byRank} />
+        ) : (
+          ""
+        )}
+        <ul
+          style={{ height: "50vh", overflowY: "scroll" }}
+          className="currency-list"
+        >
           {loading ? <Loader /> : this.renderCurrencies()}
         </ul>
       </div>
