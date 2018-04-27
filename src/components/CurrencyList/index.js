@@ -6,7 +6,7 @@ import CurrencyItem from "../CurrencyItem";
 import Loader from "../Loader";
 import actions from "../../actions";
 
-export class Summary extends Component {
+export class CurrencyList extends Component {
   constructor(props) {
     super(props);
     props.fetchCurrencyData();
@@ -68,4 +68,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actions.flagLoading()) && dispatch(actions.fetchCurrencyData())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Summary);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencyList);
