@@ -10,7 +10,7 @@ class LineChart extends Component {
       top: 30,
       right: 30,
       bottom: 40,
-      left: 50
+      left: 90
     };
     this.state = {
       dates: [],
@@ -134,6 +134,7 @@ class LineChart extends Component {
   createXAxis() {
     this.svg
       .append("g")
+      .attr("class", "axis")
       .attr(
         "transform",
         `translate(${this.margin.left}, ${this.height + this.margin.top})`
@@ -146,6 +147,10 @@ class LineChart extends Component {
     };
     this.addStyles(d3.selectAll(".axis path"), axesStyles);
     this.addStyles(d3.selectAll(".axis line"), axesStyles);
+    this.addStyles(d3.selectAll(".axis .domain"), {
+      ...axesStyles,
+      display: "none"
+    });
   }
 
   createYAxis() {
@@ -153,7 +158,7 @@ class LineChart extends Component {
       .append("g")
       .attr("class", "yaxis")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
-      .call(d3.axisRight(this.yScale));
+      .call(d3.axisLeft(this.yScale));
   }
 
   createMouseEffects() {
