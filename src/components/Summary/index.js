@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import CurrencyItem from '../CurrencyItem';
-import actions from '../../actions';
+import CurrencyItem from "../CurrencyItem";
+import Loader from "../Loader";
+import actions from "../../actions";
 
 export class Summary extends Component {
   constructor(props) {
@@ -12,16 +13,18 @@ export class Summary extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencyData.map((c, i) => <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />);
+    return this.props.currencyData.map((c, i) => (
+      <CurrencyItem key={`item-${c.short}`} {...c} rank={i + 1} />
+    ));
   }
 
   render() {
     const { loading } = this.props;
 
     return (
-      <div style={{ height: '50vh', overflowY: 'scroll' }}>
+      <div style={{ height: "50vh", overflowY: "scroll" }}>
         <ul className="currency-list">
-          {loading ? <div>...loading...</div> : this.renderCurrencies()}
+          {loading ? <Loader /> : this.renderCurrencies()}
         </ul>
       </div>
     );
@@ -40,22 +43,23 @@ const currencyInfo = PropTypes.shape({
   usdVolume: PropTypes.number,
   volume: PropTypes.number,
   vwapData: PropTypes.number,
-  vwapDataBTC: PropTypes.number,
+  vwapDataBTC: PropTypes.number
 });
 
 Summary.propTypes = {
   currencyData: PropTypes.arrayOf(currencyInfo).isRequired,
   loading: PropTypes.bool.isRequired,
-  fetchCurrencyData: PropTypes.func.isRequired,
+  fetchCurrencyData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   ...state.rootReducer,
-  ...state.flagsReducer,
+  ...state.flagsReducer
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrencyData: () => dispatch(actions.flagLoading()) && dispatch(actions.fetchCurrencyData()),
+  fetchCurrencyData: () =>
+    dispatch(actions.flagLoading()) && dispatch(actions.fetchCurrencyData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

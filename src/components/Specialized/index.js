@@ -7,6 +7,7 @@ import LineChart from "../LineChart";
 import CapChangeIndicator from "../CapChangeIndicator";
 import RankIndicator from "../RankIndicator";
 import CurrencySprite from "../CurrencySprite";
+import Loader from "../Loader";
 import actions from "../../actions";
 import { formatInteger, formatMoney } from "../../utils";
 
@@ -129,11 +130,7 @@ export class Specialized extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.loading ? (
-          <div>Loading...</div>
-        ) : (
-          this.renderSpecializedData()
-        )}
+        {this.props.loading ? <Loader /> : this.renderSpecializedData()}
       </Fragment>
     );
   }
