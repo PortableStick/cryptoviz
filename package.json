@@ -42,6 +42,7 @@
     "eslint-loader": "1.9.0",
     "eslint-plugin-flowtype": "2.39.1",
     "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
     "extract-text-webpack-plugin": "3.0.2",
@@ -87,6 +88,9 @@
       "export REACT_APP_BASE_URL='http://coincap.io' && node scripts/start.js",
     "start": "npm run start:live",
     "build": "node scripts/build.js",
+    "predeploy":
+      "export REACT_APP_BASE_URL='https://api.gregoftheweb.com' npm run build",
+    "deploy": "gh-pages -d build",
     "test": "node scripts/test.js --env=jsdom",
     "spec": "npm run test -- --verbose --coverage",
     "precommit": "pretty-quick --staged"
